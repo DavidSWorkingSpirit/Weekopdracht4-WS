@@ -2,5 +2,5 @@ package pizzaria;
 
 public interface Bestelbaar {
 	
-	int bestellen();
+	String bestellen(String s);
 }

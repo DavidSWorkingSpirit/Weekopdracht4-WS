@@ -1,11 +1,11 @@
 package pizzaria;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Pizza {
-	String soort;
-	List<Bestelbaar> ingredienten = new ArrayList<>();
+	String soort; //mogelijk later nodig om soort pizza aan te geven (normaal, calzone).
+	int prijs;
+	ArrayList<Bestelbaar> ingredienten = new ArrayList<>();
 	
 	Pizza(Bestelbaar b1){
 		ingredienten.add(b1);

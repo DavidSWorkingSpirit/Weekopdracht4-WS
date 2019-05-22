@@ -11,6 +11,12 @@ public class Magazijn {
 	static int aantalSalami;
 	static int aantalUi;
 	
+	static int hamReservering;
+	static int kaasReservering;
+	static int paprikaReservering;
+	static int salamiReservering;
+	static int uiReservering;
+	
 	public String magazijnVullen() {
 		aantalHam = randy.nextInt(10) + 1;
 		aantalKaas = randy.nextInt(10) + 1;
@@ -34,5 +40,23 @@ public class Magazijn {
 		else {
 			return "Het magazijn moet worden aangevuld.";
 		}
+	}
+	
+	public static String gebruikIngredienten() {
+		aantalHam -= hamReservering;
+		aantalKaas -= kaasReservering;
+		aantalPaprika -= paprikaReservering;
+		aantalSalami -= salamiReservering;
+		aantalUi -= uiReservering;
+		return "Het magazijn is geupdate.";
+	}
+	
+	public static String resetReservering() {
+		hamReservering = 0;
+		kaasReservering = 0;
+		paprikaReservering = 0;
+		salamiReservering = 0;
+		uiReservering = 0;
+		return "De ingrediënt reserveringen zijn gereset.";
 	}
 }

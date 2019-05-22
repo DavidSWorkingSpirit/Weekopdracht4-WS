@@ -6,13 +6,25 @@ public class Pizzabakker extends Medewerker {
 		this.naam = naam;
 	}
 	
-	Pizza pizzaBakken(Pizza pizza) {
+	Pizza pizzaBakken(Pizza pizza, Pizzabakker pb) throws InterruptedException {
 		Pizza gebakkenPizza = null;
 		try {
 			gebakkenPizza = ingredientCheck(pizza);
+			gebakkenPizza.gebakkenDoor = pb.naam;
+			Magazijn.gebruikIngredienten();
+			
+			for(int sec = 0; sec <= 20; sec++) {
+					Thread.sleep(1000);
+					if(sec == pizza.bereidingstijd) {
+						System.out.println("De pizza is klaar. Tijd om af te rekenen.");
+						System.out.println("De pizza is gebakken door pizzabakker " + gebakkenPizza.gebakkenDoor + ".");
+						break;
+					}
+			}
 			return gebakkenPizza;
 		} catch (IngredientOpException e) {
-			System.out.println("Eén of meerdere ingrediënten zijn op!");
+			System.out.println("Pizzabakker " + pb + " zegt dat één of meerdere ingrediënten op zijn!");
+			Magazijn.resetReservering();
 //			e.printStackTrace();
 		}
 		return gebakkenPizza;
@@ -22,22 +34,21 @@ public class Pizzabakker extends Medewerker {
 		Pizza tijdelijkePizza = pizza;
 		
 		for (Bestelbaar elem : tijdelijkePizza.ingredienten) {
-			Ingredient tijdelijkIngredient = (Ingredient)elem;
-			String tijdelijkeNaam = tijdelijkIngredient.naam;
+			String tijdelijkeNaam = ((Ingredient)elem).naam;
 			
 			switch(tijdelijkeNaam) {
-				case "kaas":{
-					if(Magazijn.aantalKaas >= 1) {
-						Magazijn.aantalKaas--;
+				case "ham":{
+					if(Magazijn.aantalHam >= 1) {
+						Magazijn.hamReservering++;
 						break;
 					}
 					else {
 						throw new IngredientOpException();
 					}
 				}
-				case "ui":{
-					if(Magazijn.aantalUi >= 1) {
-						Magazijn.aantalUi--;
+				case "kaas":{
+					if(Magazijn.aantalKaas >= 1) {
+						Magazijn.kaasReservering++;
 						break;
 					}
 					else {
@@ -46,7 +57,7 @@ public class Pizzabakker extends Medewerker {
 				}
 				case "paprika":{
 					if(Magazijn.aantalPaprika >= 1) {
-						Magazijn.aantalPaprika--;
+						Magazijn.paprikaReservering++;
 						break;
 					}
 					else {
@@ -55,16 +66,16 @@ public class Pizzabakker extends Medewerker {
 				}
 				case "salami":{
 					if(Magazijn.aantalSalami >= 1) {
-						Magazijn.aantalSalami--;
+						Magazijn.salamiReservering++;
 						break;
 					}
 					else {
 						throw new IngredientOpException();
 					}
 				}
-				case "ham":{
-					if(Magazijn.aantalHam >= 1) {
-						Magazijn.aantalHam--;
+				case "ui":{
+					if(Magazijn.aantalUi >= 1) {
+						Magazijn.uiReservering++;
 						break;
 					}
 					else {

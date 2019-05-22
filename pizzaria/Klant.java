@@ -2,6 +2,7 @@ package pizzaria;
 
 public class Klant {
 	String naam;
+	String geholpenDoor;
 	int geld;
 	
 	Klant(String naam, int money) {
@@ -11,6 +12,6 @@ public class Klant {
 	
     @Override
     public String toString() {
-        return String.format("%s\t%s", "Naam: " + naam, "Geld: " + geld);
+        return String.format("Naam: " + naam + " " + "Geld: " + geld + " |");
     }
 }

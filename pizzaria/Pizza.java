@@ -3,8 +3,9 @@ package pizzaria;
 import java.util.ArrayList;
 
 public class Pizza {
-	String soort; //mogelijk later nodig om soort pizza aan te geven (normaal, calzone).
+	String gebakkenDoor;
 	int prijs;
+	int bereidingstijd;
 	ArrayList<Bestelbaar> ingredienten = new ArrayList<>();
 	
 	Pizza(Bestelbaar b1){
@@ -38,4 +39,12 @@ public class Pizza {
 	}
 	
 	//Misschien methode voor uitprinten ingrediënten van pizza's.
+    @Override
+    public String toString() {
+    	System.out.print("Pizza met de ingrediënten: ");
+    	for(Bestelbaar elem : ingredienten) {
+    		System.out.print(((Ingredient)elem).naam + " ");
+    	}
+    	return "";
+    }
 }

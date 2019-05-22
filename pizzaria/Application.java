@@ -1,17 +1,20 @@
 package pizzaria;
 
+import java.util.Random;
 import java.util.Scanner;
 import pizzaria.Kassamedewerker.NietGenoegGeldException;
 
 public class Application {
 	
 	static Scanner sc = new Scanner(System.in);
+	static Random ranbo = new Random();
 	
 	public static void main(String[] args) {
 		boolean geopend = true;
-		// Kassamedewerker en pizzabakker random een String meegeven als naam uit een array van namen. (Medewerkers onder contract)
-		Kassamedewerker km1 = new Kassamedewerker("Dana");
-		Pizzabakker pb1 = new Pizzabakker("Luigi");
+		String[] kassamedewerkers = {"Dana", "Hans", "Mitchel", "Jeffrey", "Priscilla", "Pietje", "Nwankulu"};
+		String[] pizzabakkers = {"Luigi", "Alfredo", "Mario", "Michelangelo", "Leonardo", "Donatello", "Raphael", "Sjon"};
+		Kassamedewerker km1 = new Kassamedewerker(kassamedewerkers[ranbo.nextInt(7)]);
+		Pizzabakker pb1 = new Pizzabakker(pizzabakkers[ranbo.nextInt(8)]);
 		
 		System.out.println("Ham: " + Magazijn.aantalHam);
 		System.out.println("Kaas: " + Magazijn.aantalKaas);
@@ -24,11 +27,18 @@ public class Application {
 			
 			switch(invoer) {
 				case "1": {
-					km1.klantOntvangen();
+					km1.klantOntvangen(km1);
 					Pizza bestelling = km1.bestellingOpnemen();
-					System.out.println(bestelling);
 					
-					Pizza gebakken = pb1.pizzaBakken(bestelling);
+					Pizza gebakken;
+					try {
+						gebakken = pb1.pizzaBakken(bestelling, pb1);
+					} catch (InterruptedException e) {
+						System.out.println("Tijdens het bakken is er iets misgegaan. Evacueer het gebouw!");
+						gebakken = null;
+//						e.printStackTrace();
+					}
+					
 					if (gebakken == null) {
 						System.out.println("De bestelling is mislukt. Vul het magazijn aan en begin opnieuw.");
 						System.out.println(km1.klanten.size());
@@ -44,10 +54,18 @@ public class Application {
 				case "a": {
 					try {
 						System.out.println(km1.afrekenen());
+						break;
 					}
 					catch (NietGenoegGeldException e){
-						System.out.println("De klant heeft niet genoeg geld. Wijs de klant de deur.");
+						System.out.println(km1.klanten.get(km1.klanten.size() - 1).naam + " heeft niet genoeg geld. Wijs de klant de deur.");
+						km1.klanten.remove(km1.klanten.size() - 1);
+						km1.bestellingen.remove(km1.bestellingen.size() - 1);
+						break;
 					}
+				}
+				case "o": {
+					System.out.println("De omzet van de pizzaria is " + km1.omzetBekijken() + " euro.");
+					break;
 				}
 				case "m": {
 					System.out.println(km1.magazijnCheck());
@@ -57,6 +75,10 @@ public class Application {
 					System.out.println("Welk ingrediënt moet worden besteld?");
 					String teBestellen = sc.next().toLowerCase();
 					System.out.println(km1.bestelIngredient(teBestellen));
+					break;
+				}
+				case "c": {
+					km1.bekijkBestellingen();
 					break;
 				}
 				case "q": {
